@@ -1,4 +1,4 @@
-const app = (function () {
+function App() {
   let dinos = [];
 
   this.human = [];
@@ -9,13 +9,25 @@ const app = (function () {
     return JSON.parse(json);
   }
 
-  return {
-    dinos: getDinos(),
-  }
+  function renderGrid() {
+    let humanData = {
+        name: document.getElementById('name').value,
+        feet: document.getElementById('feet').value,
+        inches: document.getElementById('inches').value,
+        weight: document.getElementById('weight').value,
+        diet: document.getElementById('diet').value,
+      }
+    console.log(humanData);
+  };
 
-})();
+  document.getElementById('btn').addEventListener('click', function() {
+    renderGrid();
+  });
 
-console.log(app.dinos);
+
+};
+
+const app = new App();
 
 
 // Create Dino Constructor
