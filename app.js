@@ -1,3 +1,5 @@
+const isEmpty = require('lodash/isEmpty');
+
 function App() {
   let dinos = [];
 
@@ -9,6 +11,24 @@ function App() {
     return JSON.parse(json);
   }
 
+  function validateForm(humanData) {
+    let allDataAvailable = true;
+    for (const humanProperty in humanData) {
+      if (isEmpty(humanData[humanProperty]) && humanProperty !== 'diet') {
+        allDataAvailable = false;
+      }
+    }
+
+    if (allDataAvailable === true) {
+      document.getElementById('dino-compare').remove();
+      document.getElementById('alert').remove();
+    } else {
+      document.getElementById('alert').style.display = 'block';
+    }
+
+    return allDataAvailable;
+  }
+
   function renderGrid() {
     let humanData = {
         name: document.getElementById('name').value,
@@ -17,13 +37,32 @@ function App() {
         weight: document.getElementById('weight').value,
         diet: document.getElementById('diet').value,
       }
-    console.log(humanData);
+    if (validateForm(humanData)) {
+      const dinos = getDinos();
+
+      let row = 1;
+      let col = 1;
+      for (const dino of dinos.Dinos) {
+        let para = document.createElement("p");
+        let node = document.createTextNode("This is new.");
+        para.appendChild(node);
+
+        let element = document.querySelector('#row' + row + ' .col' + col);
+        element.appendChild(para);
+
+        if (col === 3) {
+          row++;
+          col = 1;
+        } else {
+          col++;
+        }
+      }
+    }
   };
 
   document.getElementById('btn').addEventListener('click', function() {
     renderGrid();
   });
-
 
 };
 

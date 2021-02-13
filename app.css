@@ -172,3 +172,10 @@ select {
     display: block;
     font-size: 0.7em;
 }
+
+#alert {
+    display: none;
+    padding: 20px;
+    background-color: #e50e58;
+    margin-bottom: 20px;
+}

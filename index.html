@@ -11,7 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <link href="app.css" rel="stylesheet">
     <!-- Link to app.js with defer till HTML render -->
-    <script defer src="app.js"></script>
+    <script defer src="webpack-dist/bundle.js"></script>
 </head>
 <body>
     <header>
@@ -19,6 +19,10 @@
         <h1>Dinosaurs</h1>
         <h3>How do you compare?</h3>
     </header>
+
+    <div id="alert">
+        Please fill out all form fields.
+    </div>
 
     <!-- Form to get user input -->
     <form id="dino-compare">
@@ -62,4 +66,5 @@
         <p class="fine-print">Data Sourced from <a href="https://www.wikipedia.org/">Wikipedia.org</a>, all numbers are approximations.</p>
     </footer>
 </body>
+
 </html>
