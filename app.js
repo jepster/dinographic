@@ -29,26 +29,94 @@ function App() {
     return allDataAvailable;
   }
 
+  function isCenterTile(row, col) {
+    return row === 2 && col === 2;
+  }
+
   function renderGrid() {
     let humanData = {
-        name: document.getElementById('name').value,
-        feet: document.getElementById('feet').value,
-        inches: document.getElementById('inches').value,
-        weight: document.getElementById('weight').value,
-        diet: document.getElementById('diet').value,
-      }
-    if (validateForm(humanData)) {
-      const dinos = getDinos();
+      name: document.getElementById('name').value,
+      feet: document.getElementById('feet').value,
+      inches: document.getElementById('inches').value,
+      weight: document.getElementById('weight').value,
+      diet: document.getElementById('diet').value,
+    }
+
+    function renderDinos() {
+      const data = getDinos();
 
       let row = 1;
       let col = 1;
-      for (const dino of dinos.Dinos) {
-        let para = document.createElement("p");
-        let node = document.createTextNode("This is new.");
-        para.appendChild(node);
 
-        let element = document.querySelector('#row' + row + ' .col' + col);
-        element.appendChild(para);
+      for (const dino of data.Dinos) {
+        if (isCenterTile(row, col)) {
+          col++;
+        }
+
+        if (row === 3 && col === 3) {
+          let imgObj = document.createElement('img');
+          imgObj.setAttribute('src', 'images/pigeon.png')
+          imgObj.setAttribute('title', 'Pigeon')
+          imgObj.setAttribute('alt', 'Pigeon')
+
+          let element = document.querySelector('#row' + row + ' .col' + col);
+          element.appendChild(imgObj);
+
+          let para = document.createElement("p");
+          let node = document.createTextNode("All birds are considered dinosaurs.");
+          para.appendChild(node);
+          element = document.querySelector('#row' + row + ' .col' + col);
+          element.appendChild(para);
+
+          para = document.createElement("p");
+          node = document.createTextNode(dino.species);
+          para.appendChild(node);
+          element = document.querySelector('#row' + row + ' .col' + col);
+          element.appendChild(para);
+
+        } else {
+          let para = document.createElement("p");
+          let node = document.createTextNode(dino.species);
+          para.appendChild(node);
+          let element = document.querySelector('#row' + row + ' .col' + col);
+          element.appendChild(para);
+
+          para = document.createElement("p");
+          node = document.createTextNode(dino.fact);
+          para.appendChild(node);
+          element.appendChild(para);
+
+          (function displayWeightComparison() {
+            let weightDiff = dino.weight - humanData.weight;
+            para = document.createElement("p");
+            node = document.createTextNode('Weight difference to human: ' + weightDiff);
+            para.appendChild(node);
+            element.appendChild(para);
+          })();
+
+          (function displayFeetHeightComparison() {
+            let heightDiff = dino.height - humanData.feet;
+            para = document.createElement("p");
+            node = document.createTextNode('Height difference to human in feet: ' + heightDiff);
+            para.appendChild(node);
+            element.appendChild(para);
+          })();
+
+          (function displayInchesHeightComparison() {
+            let dinoHeightInInches = dino.height * 12;
+            let heightDiff = dinoHeightInInches - humanData.inches;
+            para = document.createElement("p");
+            node = document.createTextNode('Height difference to human in inches: ' + heightDiff);
+            para.appendChild(node);
+            element.appendChild(para);
+          })();
+
+          let imgObj = document.createElement('img');
+          imgObj.setAttribute('src', 'images/' + dino.species.toLowerCase() + '.png')
+          imgObj.setAttribute('title', dino.species)
+          imgObj.setAttribute('alt', dino.species)
+          element.appendChild(imgObj);
+        }
 
         if (col === 3) {
           row++;
@@ -58,6 +126,28 @@ function App() {
         }
       }
     }
+
+    function renderHuman() {
+      let imgObj = document.createElement('img');
+      imgObj.setAttribute('src', 'images/human.png')
+      imgObj.setAttribute('title', 'Human')
+      imgObj.setAttribute('alt', 'Human')
+
+      let element = document.querySelector('#row2 .col2');
+      element.appendChild(imgObj);
+
+      let para = document.createElement("p");
+      let node = document.createTextNode("Name: " + humanData.name);
+      para.appendChild(node);
+      element = document.querySelector('#row2 .col2');
+      element.appendChild(para);
+    }
+
+    if (validateForm(humanData)) {
+      renderDinos();
+      renderHuman();
+    }
+
   };
 
   document.getElementById('btn').addEventListener('click', function() {
@@ -67,36 +157,3 @@ function App() {
 };
 
 const app = new App();
-
-
-// Create Dino Constructor
-
-
-    // Create Dino Objects
-
-
-    // Create Human Object
-
-    // Use IIFE to get human data from form
-
-
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
-
-    
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-    
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-    // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
-
-    // Remove form from screen
-
-
-// On button click, prepare and display infographic
