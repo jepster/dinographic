@@ -20,6 +20,5 @@ module.exports = {
       }
     ]
   },
-  devtool: 'none',
-  watch: true,
+  devtool: 'none'
 };

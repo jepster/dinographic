@@ -45,6 +45,10 @@ p {
     background-color: #FFF;
 }
 
+.hidden {
+    display: none;
+}
+
 .grid-item {
     position: relative;
     box-sizing: border-box;
@@ -178,4 +182,17 @@ select {
     padding: 20px;
     background-color: #e50e58;
     margin-bottom: 20px;
+}
+
+.hidden .col1, .hidden .col2, .hidden .col3 {
+    display: none;
+}
+
+.col1, .col2, .col3 {
+    width: 33%;
+    height: 400px;
+}
+
+#grid img {
+    width: 150px;
 }

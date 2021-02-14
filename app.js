@@ -30,6 +30,9 @@ function App() {
   }
 
   function renderGrid() {
+    let element = document.getElementById("grid");
+    element.classList.remove("hidden");
+
     let humanData = {
       name: document.getElementById('name').value,
       feet: document.getElementById('feet').value,
@@ -85,7 +88,7 @@ function App() {
           (function displayWeightComparison() {
             let weightDiff = dino.weight - humanData.weight;
             para = document.createElement("p");
-            node = document.createTextNode('Weight difference to human: ' + weightDiff);
+            node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff);
             para.appendChild(node);
             element.appendChild(para);
           })();
