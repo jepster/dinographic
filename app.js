@@ -47,16 +47,30 @@ function App() {
       let row = 1;
       let col = 1;
 
-      for (const dino of data.Dinos) {
+      for (const rawDino of data.Dinos) {
+
+        function Dino(species, weight, height, diet, where, when, fact){
+          this.species = species;
+          this.weight = weight;
+          this.height = height;
+          this.diet = diet;
+          this.where = where;
+          this.when = when;
+          this.fact = fact;
+          this.image = "images/" + this.species + ".png";
+        }
+
+        const dino = new Dino(rawDino.species, rawDino.weight, rawDino.height, rawDino.diet, rawDino.where, rawDino.when, rawDino.fact);
+
         if (isCenterTile(row, col)) {
           col++;
         }
 
         if (row === 3 && col === 3) {
           let imgObj = document.createElement('img');
-          imgObj.setAttribute('src', 'images/pigeon.png')
-          imgObj.setAttribute('title', 'Pigeon')
-          imgObj.setAttribute('alt', 'Pigeon')
+          imgObj.setAttribute('src', dino.image)
+          imgObj.setAttribute('title', dino.species)
+          imgObj.setAttribute('alt', dino.species)
 
           let element = document.querySelector('#row' + row + ' .col' + col);
           element.appendChild(imgObj);
@@ -85,30 +99,30 @@ function App() {
           para.appendChild(node);
           element.appendChild(para);
 
-          (function displayWeightComparison() {
-            let weightDiff = dino.weight - humanData.weight;
+          (function displayWeightComparison(dinoWeight) {
+            let weightDiff = dinoWeight - humanData.weight;
             para = document.createElement("p");
             node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff);
             para.appendChild(node);
             element.appendChild(para);
-          })();
+          })(dino.weight);
 
-          (function displayFeetHeightComparison() {
-            let heightDiff = dino.height - humanData.feet;
+          (function displayFeetHeightComparison(dinoHeight) {
+            let heightDiff = dinoHeight - humanData.feet;
             para = document.createElement("p");
             node = document.createTextNode('Height difference to human in feet: ' + heightDiff);
             para.appendChild(node);
             element.appendChild(para);
-          })();
+          })(dino.height);
 
-          (function displayInchesHeightComparison() {
-            let dinoHeightInInches = dino.height * 12;
+          (function displayInchesHeightComparison(dinoHeight) {
+            let dinoHeightInInches = dinoHeight * 12;
             let heightDiff = dinoHeightInInches - humanData.inches;
             para = document.createElement("p");
             node = document.createTextNode('Height difference to human in inches: ' + heightDiff);
             para.appendChild(node);
             element.appendChild(para);
-          })();
+          })(dino.height);
 
           let imgObj = document.createElement('img');
           imgObj.setAttribute('src', 'images/' + dino.species.toLowerCase() + '.png')
