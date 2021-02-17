@@ -129,10 +129,6 @@ function App() {
     return allDataAvailable;
   }
 
-  function isCenterTile(row, col) {
-    return row === 2 && col === 2;
-  }
-
   function renderGrid() {
     var element = document.getElementById("grid");
     element.classList.remove("hidden");
@@ -144,127 +140,171 @@ function App() {
       diet: document.getElementById('diet').value
     };
 
-    function renderDinos() {
-      var data = getDinos();
-      var row = 1;
-      var col = 1;
+    function ContainerNumberManager() {
+      var humanContainerNumber = 5;
+      var birdContainerNumber = 9;
+      var dinoContainerNumbers = [1, 2, 3, 4, 6, 7, 8];
 
-      var _iterator = _createForOfIteratorHelper(data.Dinos),
-          _step;
+      function shuffle(array) {
+        var currentIndex = array.length,
+            temporaryValue,
+            randomIndex;
 
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var Dino = function Dino(species, weight, height, diet, where, when, fact) {
-            this.species = species;
-            this.weight = weight;
-            this.height = height;
-            this.diet = diet;
-            this.where = where;
-            this.when = when;
-            this.fact = fact;
-            this.image = "images/" + this.species + ".png";
-          };
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
 
-          var rawDino = _step.value;
-          var dino = new Dino(rawDino.species, rawDino.weight, rawDino.height, rawDino.diet, rawDino.where, rawDino.when, rawDino.fact);
+        return array;
+      }
 
-          if (isCenterTile(row, col)) {
-            col++;
-          }
+      dinoContainerNumbers = shuffle(dinoContainerNumbers);
+      return {
+        getHumanContainerNum: function getHumanContainerNum() {
+          return humanContainerNumber;
+        },
+        getBirdContainerNumber: function getBirdContainerNumber() {
+          return birdContainerNumber;
+        },
+        getDinoContainerNumber: function getDinoContainerNumber() {
+          var _iterator = _createForOfIteratorHelper(dinoContainerNumbers),
+              _step;
 
-          if (row === 3 && col === 3) {
-            var imgObj = document.createElement('img');
-            imgObj.setAttribute('src', dino.image);
-            imgObj.setAttribute('title', dino.species);
-            imgObj.setAttribute('alt', dino.species);
-
-            var _element = document.querySelector('#row' + row + ' .col' + col);
-
-            _element.appendChild(imgObj);
-
-            var para = document.createElement("p");
-            var node = document.createTextNode("All birds are considered dinosaurs.");
-            para.appendChild(node);
-            _element = document.querySelector('#row' + row + ' .col' + col);
-
-            _element.appendChild(para);
-
-            para = document.createElement("p");
-            node = document.createTextNode(dino.species);
-            para.appendChild(node);
-            _element = document.querySelector('#row' + row + ' .col' + col);
-
-            _element.appendChild(para);
-          } else {
-            (function () {
-              var para = document.createElement("p");
-              var node = document.createTextNode(dino.species);
-              para.appendChild(node);
-              var element = document.querySelector('#row' + row + ' .col' + col);
-              element.appendChild(para);
-              para = document.createElement("p");
-              node = document.createTextNode(dino.fact);
-              para.appendChild(node);
-              element.appendChild(para);
-
-              (function displayWeightComparison(dinoWeight) {
-                var weightDiff = dinoWeight - humanData.weight;
-                para = document.createElement("p");
-                node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff);
-                para.appendChild(node);
-                element.appendChild(para);
-              })(dino.weight);
-
-              (function displayFeetHeightComparison(dinoHeight) {
-                var heightDiff = dinoHeight - humanData.feet;
-                para = document.createElement("p");
-                node = document.createTextNode('Height difference to human in feet: ' + heightDiff);
-                para.appendChild(node);
-                element.appendChild(para);
-              })(dino.height);
-
-              (function displayInchesHeightComparison(dinoHeight) {
-                var dinoHeightInInches = dinoHeight * 12;
-                var heightDiff = dinoHeightInInches - humanData.inches;
-                para = document.createElement("p");
-                node = document.createTextNode('Height difference to human in inches: ' + heightDiff);
-                para.appendChild(node);
-                element.appendChild(para);
-              })(dino.height);
-
-              var imgObj = document.createElement('img');
-              imgObj.setAttribute('src', 'images/' + dino.species.toLowerCase() + '.png');
-              imgObj.setAttribute('title', dino.species);
-              imgObj.setAttribute('alt', dino.species);
-              element.appendChild(imgObj);
-            })();
-          }
-
-          if (col === 3) {
-            row++;
-            col = 1;
-          } else {
-            col++;
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var dinoContainerNumber = _step.value;
+              dinoContainerNumbers.shift();
+              return dinoContainerNumber;
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
           }
         }
+      };
+    }
+
+    function renderDinos() {
+      var containerNumberManager = new ContainerNumberManager();
+
+      function Dino(species, weight, height, diet, where, when, fact) {
+        this.species = species;
+        this.weight = weight;
+        this.height = height;
+        this.diet = diet;
+        this.where = where;
+        this.when = when;
+        this.fact = fact;
+        this.image = "images/" + this.species + ".png";
+      }
+
+      var dinoArray = [];
+      var data = getDinos();
+
+      var _iterator2 = _createForOfIteratorHelper(data.Dinos),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var rawDino = _step2.value;
+
+          var _dino = new Dino(rawDino.species, rawDino.weight, rawDino.height, rawDino.diet, rawDino.where, rawDino.when, rawDino.fact);
+
+          dinoArray[_dino.species] = _dino;
+        }
       } catch (err) {
-        _iterator.e(err);
+        _iterator2.e(err);
       } finally {
-        _iterator.f();
+        _iterator2.f();
+      }
+
+      (function computePigeon() {
+        var imgObj = document.createElement('img');
+        imgObj.setAttribute('src', dinoArray.Pigeon.image);
+        imgObj.setAttribute('title', dinoArray.Pigeon.species);
+        imgObj.setAttribute('alt', dinoArray.Pigeon.species);
+        var element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
+        element.appendChild(imgObj);
+        var para = document.createElement("span");
+        var node = document.createTextNode("All birds are considered dinosaurs.");
+        para.appendChild(node);
+        element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
+        element.appendChild(para);
+        para = document.createElement("span");
+        node = document.createTextNode(dinoArray.Pigeon.species);
+        para.appendChild(node);
+        element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
+        element.appendChild(para);
+      })(containerNumberManager, dinoArray);
+
+      delete dinoArray.Pigeon;
+      console.log(dinoArray);
+
+      var _loop = function _loop(dino) {
+        var containerNumber = containerNumberManager.getDinoContainerNumber();
+        var para = document.createElement("p");
+        var node = document.createTextNode(dinoArray[dino].species);
+        para.appendChild(node);
+        var element = document.querySelector(' .container' + containerNumber);
+        element.appendChild(para);
+        para = document.createElement("span");
+        node = document.createTextNode(dinoArray[dino].fact);
+        para.appendChild(node);
+        element.appendChild(para);
+
+        (function displayWeightComparison(dinoWeight) {
+          var weightDiff = dinoWeight - humanData.weight;
+          para = document.createElement("span");
+          node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff);
+          para.appendChild(node);
+          element.appendChild(para);
+        })(dinoArray[dino].weight);
+
+        (function displayFeetHeightComparison(dinoHeight) {
+          var heightDiff = dinoHeight - humanData.feet;
+          para = document.createElement("span");
+          node = document.createTextNode('Height difference to human in feet: ' + heightDiff);
+          para.appendChild(node);
+          element.appendChild(para);
+        })(dinoArray[dino].height);
+
+        (function displayInchesHeightComparison(dinoHeight) {
+          var dinoHeightInInches = dinoHeight * 12;
+          var heightDiff = dinoHeightInInches - humanData.inches;
+          para = document.createElement("span");
+          node = document.createTextNode('Height difference to human in inches: ' + heightDiff);
+          para.appendChild(node);
+          element.appendChild(para);
+        })(dinoArray[dino].height);
+
+        var imgObj = document.createElement('img');
+        imgObj.setAttribute('src', 'images/' + dinoArray[dino].species.toLowerCase() + '.png');
+        imgObj.setAttribute('title', dinoArray[dino].species);
+        imgObj.setAttribute('alt', dinoArray[dino].species);
+        element.appendChild(imgObj);
+      };
+
+      for (var dino in dinoArray) {
+        _loop(dino);
       }
     }
 
     function renderHuman() {
+      var containerManager = new ContainerNumberManager();
       var imgObj = document.createElement('img');
       imgObj.setAttribute('src', 'images/human.png');
       imgObj.setAttribute('title', 'Human');
       imgObj.setAttribute('alt', 'Human');
-      var element = document.querySelector('#row2 .col2');
+      var element = document.querySelector('.container' + containerManager.getHumanContainerNum());
       element.appendChild(imgObj);
-      var para = document.createElement("p");
+      var para = document.createElement("span");
       var node = document.createTextNode("Name: " + humanData.name);
       para.appendChild(node);
-      element = document.querySelector('#row2 .col2');
+      element = document.querySelector('.container' + containerManager.getHumanContainerNum());
       element.appendChild(para);
     }
 
