@@ -105,22 +105,20 @@ function App() {
         let element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
         element.appendChild(imgObj);
 
-        let para = document.createElement("span");
-        let node = document.createTextNode("All birds are considered dinosaurs.");
-        para.appendChild(node);
-        element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
-        element.appendChild(para);
-
-        para = document.createElement("span");
+        let para = document.createElement("p");
         node = document.createTextNode(dinoArray.Pigeon.species);
         para.appendChild(node);
         element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
         element.appendChild(para);
+
+        let span = document.createElement('span');
+        let node = document.createTextNode("All birds are considered dinosaurs.");
+        span.appendChild(node);
+        element = document.querySelector(' .container' + containerNumberManager.getBirdContainerNumber());
+        element.appendChild(span);
       })(containerNumberManager, dinoArray);
 
       delete dinoArray.Pigeon;
-
-      console.log(dinoArray);
 
       for (const dino in dinoArray) {
         const containerNumber = containerNumberManager.getDinoContainerNumber();
@@ -130,35 +128,32 @@ function App() {
         let element = document.querySelector(' .container' + containerNumber);
         element.appendChild(para);
 
-        para = document.createElement("span");
+        let span = document.createElement("span");
         node = document.createTextNode(dinoArray.[dino].fact);
-        para.appendChild(node);
-        element.appendChild(para);
+        span.appendChild(node);
+        element.appendChild(span);
 
-        (function displayWeightComparison(dinoWeight) {
+        (function displayWeightComparison(dinoWeight, span) {
           let weightDiff = dinoWeight - humanData.weight;
-          para = document.createElement("span");
-          node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff);
-          para.appendChild(node);
-          element.appendChild(para);
-        })(dinoArray.[dino].weight);
+          node = document.createTextNode('Weight difference to human in lbs: ' + weightDiff + '. ');
+          span.appendChild(node);
+          element.appendChild(span);
+        })(dinoArray.[dino].weight, span);
 
-        (function displayFeetHeightComparison(dinoHeight) {
+        (function displayFeetHeightComparison(dinoHeight, span) {
           let heightDiff = dinoHeight - humanData.feet;
-          para = document.createElement("span");
-          node = document.createTextNode('Height difference to human in feet: ' + heightDiff);
-          para.appendChild(node);
-          element.appendChild(para);
-        })(dinoArray.[dino].height);
+          node = document.createTextNode('Height difference to human in feet: ' + heightDiff + '. ');
+          span.appendChild(node);
+          element.appendChild(span);
+        })(dinoArray.[dino].height, span);
 
-        (function displayInchesHeightComparison(dinoHeight) {
-          let dinoHeightInInches = dinoHeight * 12;
-          let heightDiff = dinoHeightInInches - humanData.inches;
-          para = document.createElement("span");
-          node = document.createTextNode('Height difference to human in inches: ' + heightDiff);
-          para.appendChild(node);
-          element.appendChild(para);
-        })(dinoArray.[dino].height);
+        (function displayInchesHeightComparison(dinoHeight, span) {
+          let dinoHeightInInches = dinoHeight * 12,
+            heightDiff = dinoHeightInInches - humanData.inches;
+          node = document.createTextNode('Height difference to human in inches: ' + heightDiff + '. ');
+          span.appendChild(node);
+          element.appendChild(span);
+        })(dinoArray.[dino].height, span);
 
         let imgObj = document.createElement('img');
         imgObj.setAttribute('src', 'images/' + dinoArray.[dino].species.toLowerCase() + '.png')
@@ -179,11 +174,11 @@ function App() {
       let element = document.querySelector('.container' + containerManager.getHumanContainerNum());
       element.appendChild(imgObj);
 
-      let para = document.createElement("span");
+      let span = document.createElement("span");
       let node = document.createTextNode("Name: " + humanData.name);
-      para.appendChild(node);
+      span.appendChild(node);
       element = document.querySelector('.container' + containerManager.getHumanContainerNum());
-      element.appendChild(para);
+      element.appendChild(span);
     }
 
     if (validateForm(humanData)) {
